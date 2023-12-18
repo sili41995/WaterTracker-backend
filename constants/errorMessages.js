@@ -5,6 +5,7 @@ const errorMessages = {
   passwordMinLengthErr: 'Password length must be at least 8 characters long',
   passwordMaxLengthErr:
     'Password length must be no more than 48 characters long',
+  passwordRepeatErr: 'The entered passwords must be the same',
 };
 
 module.exports = errorMessages;

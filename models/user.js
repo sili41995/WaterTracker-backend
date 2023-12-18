@@ -1,9 +1,11 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
-const { preUpdate, handleMongooseError } = require('./hooks');
+const hooks = require('./hooks');
 const { errorMessages, regExp } = require('../constants');
+const { passwordRepeatValidator } = require('../utils');
 
 const { emailRegExp } = regExp;
+const { handleMongooseError, preUpdate } = hooks;
 
 const {
   emailRegExpErr,
@@ -11,14 +13,8 @@ const {
   passwordRequiredErr,
   passwordMinLengthErr,
   passwordMaxLengthErr,
+  passwordRepeatErr,
 } = errorMessages;
-
-const userSchemaPasswordSettings = {
-  type: String,
-  minLength: [8, passwordMinLengthErr],
-  maxLength: [48, passwordMaxLengthErr],
-  required: [true, passwordRequiredErr],
-};
 
 const userSchema = new Schema(
   {
@@ -28,8 +24,19 @@ const userSchema = new Schema(
       required: [true, emailRequiredErr],
       unique: true,
     },
-    password: userSchemaPasswordSettings,
-    passwordRepeat: userSchemaPasswordSettings,
+    password: {
+      type: String,
+      minLength: [8, passwordMinLengthErr],
+      required: [true, passwordRequiredErr],
+    },
+    token: {
+      type: String,
+      default: null,
+    },
+    avatar: {
+      type: String,
+      default: null,
+    },
   },
   { versionKey: false, timestamps: true }
 );
@@ -52,7 +59,10 @@ const passwordSettings = Joi.string().min(8).max(48).required().messages({
 const signUpSchema = Joi.object({
   email: emailSettings,
   password: passwordSettings,
-  passwordRepeat: passwordSettings,
+  passwordRepeat: Joi.string().valid(Joi.ref('password')).required().messages({
+    'any.required': passwordRequiredErr,
+    'any.only': passwordRepeatErr,
+  }),
 });
 
 const signInSchema = Joi.object({

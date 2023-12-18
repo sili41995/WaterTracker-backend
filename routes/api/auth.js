@@ -1,12 +1,17 @@
 const express = require('express');
 const {
   signUp,
-  //   signIn,
-  //   signOut,
+  signIn,
+  signOut,
   //   current,
-  //   updateAvatar,
+  updateAvatar,
 } = require('../../controllers/auth');
-const { validateBody, authenticate, upload } = require('../../middlewares');
+const {
+  validateBody,
+  authenticate,
+  upload,
+  fileUploadError,
+} = require('../../middlewares');
 const { signUpSchema, signInSchema } = require('../../models/user');
 
 const router = express.Router();
@@ -17,9 +22,15 @@ router.post(
   validateBody(signUpSchema),
   signUp
 );
-// router.post('/signin', validateBody(signInSchema), signIn);
-// router.post('/signout', authenticate, signOut);
+router.post('/signin', validateBody(signInSchema), signIn);
+router.post('/signout', authenticate, signOut);
 // router.get('/current', authenticate, current);
-// router.patch('/avatars', authenticate, upload.single('avatar'), updateAvatar);
+router.patch(
+  '/avatars',
+  authenticate,
+  upload.single('avatar'),
+  fileUploadError,
+  updateAvatar
+);
 
 module.exports = router;

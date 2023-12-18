@@ -1,18 +1,9 @@
 const fs = require('fs/promises');
 const cloudinary = require('./cloudinary');
-const { defaultAvatarsURL } = require('../constants');
 
-const updateImage = async ({ path, filename } = {}) => {
-  if (!path) {
-    return { url: undefined };
-  }
-
-  const isDefaultAvatar = Object.values(defaultAvatarsURL).some((url) =>
-    url.includes(filename)
-  );
-
+const updateImage = async ({ path, imageFilename }) => {
   const result = await cloudinary.uploader.upload(path, {
-    public_id: isDefaultAvatar ? '' : filename,
+    public_id: imageFilename,
     folder: 'avatars',
     width: 200,
     height: 200,
