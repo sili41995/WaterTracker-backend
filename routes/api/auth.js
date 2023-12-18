@@ -3,16 +3,16 @@ const {
   signUp,
   signIn,
   signOut,
-  //   current,
+  current,
   updateAvatar,
+  updateProfile,
 } = require('../../controllers/auth');
+const { validateBody, authenticate, upload } = require('../../middlewares');
 const {
-  validateBody,
-  authenticate,
-  upload,
-  fileUploadError,
-} = require('../../middlewares');
-const { signUpSchema, signInSchema } = require('../../models/user');
+  signUpSchema,
+  signInSchema,
+  updateProfileSchema,
+} = require('../../models/user');
 
 const router = express.Router();
 
@@ -24,13 +24,13 @@ router.post(
 );
 router.post('/signin', validateBody(signInSchema), signIn);
 router.post('/signout', authenticate, signOut);
-// router.get('/current', authenticate, current);
-router.patch(
-  '/avatars',
+router.get('/current', authenticate, current);
+router.put(
+  '/profile',
   authenticate,
-  upload.single('avatar'),
-  fileUploadError,
-  updateAvatar
+  validateBody(updateProfileSchema),
+  updateProfile
 );
+router.patch('/avatars', authenticate, upload.single('avatar'), updateAvatar);
 
 module.exports = router;

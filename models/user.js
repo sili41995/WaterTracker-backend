@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
 const hooks = require('./hooks');
-const { errorMessages, regExp } = require('../constants');
-const { passwordRepeatValidator } = require('../utils');
+const { errorMessages, regExp, profileSettings } = require('../constants');
 
 const { emailRegExp } = regExp;
 const { handleMongooseError, preUpdate } = hooks;
+const { passMinLength, passMaxLength, genders } = profileSettings;
 
 const {
   emailRegExpErr,
@@ -14,6 +14,8 @@ const {
   passwordMinLengthErr,
   passwordMaxLengthErr,
   passwordRepeatErr,
+  passwordRepeatRequiredErr,
+  genderEnumErr,
 } = errorMessages;
 
 const userSchema = new Schema(
@@ -26,17 +28,19 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      minLength: [8, passwordMinLengthErr],
+      minLength: [passMinLength, passwordMinLengthErr],
       required: [true, passwordRequiredErr],
     },
     token: {
       type: String,
       default: null,
     },
-    avatar: {
+    avatar: String,
+    gender: {
       type: String,
-      default: null,
+      enum: { values: genders, message: genderEnumErr },
     },
+    name: String,
   },
   { versionKey: false, timestamps: true }
 );
@@ -45,31 +49,42 @@ userSchema.pre('findOneAndUpdate', preUpdate);
 userSchema.post('save', handleMongooseError);
 userSchema.post('findOneAndUpdate', handleMongooseError);
 
-const emailSettings = Joi.string().pattern(emailRegExp).required().messages({
+const emailSettings = Joi.string().pattern(emailRegExp).messages({
   'any.required': emailRequiredErr,
   'string.pattern.base': emailRegExpErr,
 });
 
-const passwordSettings = Joi.string().min(8).max(48).required().messages({
-  'any.required': passwordRequiredErr,
-  'string.min': passwordMinLengthErr,
-  'string.max': passwordMaxLengthErr,
-});
+const passwordSettings = Joi.string()
+  .min(passMinLength)
+  .max(passMaxLength)
+  .messages({
+    'any.required': passwordRequiredErr,
+    'string.min': passwordMinLengthErr,
+    'string.max': passwordMaxLengthErr,
+  });
+
+const passwordRepeatSettings = Joi.string()
+  .valid(Joi.ref('password'))
+  .messages({
+    'any.required': passwordRepeatRequiredErr,
+    'any.only': passwordRepeatErr,
+  });
 
 const signUpSchema = Joi.object({
-  email: emailSettings,
-  password: passwordSettings,
-  passwordRepeat: Joi.string().valid(Joi.ref('password')).required().messages({
-    'any.required': passwordRequiredErr,
-    'any.only': passwordRepeatErr,
-  }),
+  email: emailSettings.required(),
+  password: passwordSettings.required(),
+  passwordRepeat: passwordRepeatSettings.required(),
 });
 
 const signInSchema = Joi.object({
-  email: emailSettings,
-  password: passwordSettings,
+  email: emailSettings.required(),
+  password: passwordSettings.required(),
+});
+
+const updateProfileSchema = Joi.object().messages({
+  'object.min': 'Missing fields',
 });
 
 const User = model('user', userSchema);
 
-module.exports = { User, signUpSchema, signInSchema };
+module.exports = { User, signUpSchema, signInSchema, updateProfileSchema };
