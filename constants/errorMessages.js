@@ -9,6 +9,9 @@ const errorMessages = {
     'Password length must be no more than 48 characters long',
   passwordRepeatRequiredErr: 'Missing required password repeat field',
   passwordRepeatErr: 'The entered passwords must be the same',
+  dailyWaterRequirement: 'Missing required daily water requirement field',
+  dailyWaterRequirementErr:
+    'The specified volume of water is harmful to health',
   genderEnumErr: `Gender must be one of ${profileSettings.genders.join(
     ' or '
   )}`,
