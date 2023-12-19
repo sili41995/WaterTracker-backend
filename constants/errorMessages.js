@@ -15,6 +15,9 @@ const errorMessages = {
   genderEnumErr: `Gender must be one of ${profileSettings.genders.join(
     ' or '
   )}`,
+  timeFeatureErr: 'The time is in the future',
+  amountRequiredErr: 'Missing required amount field',
+  timeRequiredErr: 'Missing required time field',
 };
 
 module.exports = errorMessages;
