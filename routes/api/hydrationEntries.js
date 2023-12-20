@@ -4,6 +4,7 @@ const {
   add,
   getById,
   updateById,
+  deleteById,
 } = require('../../controllers/hydrationEntries');
 const {
   addHydrationEntrySchema,
@@ -22,5 +23,6 @@ router.put(
   validateBody(updateHydrationEntrySchema),
   updateById
 );
+router.delete('/:entryId', isValidId, deleteById);
 
 module.exports = router;
