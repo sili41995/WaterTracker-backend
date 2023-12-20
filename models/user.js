@@ -106,7 +106,7 @@ const dailyWaterRequirementSchema = Joi.object({
     }),
 });
 
-const updateProfileSchema = Joi.object().messages({
+const updateProfileSchema = Joi.object().min(1).messages({
   'object.min': 'Missing fields',
 });
 

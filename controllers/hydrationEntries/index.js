@@ -1,3 +1,4 @@
 const add = require('./add');
+const getById = require('./getById');
 
-module.exports = { add };
+module.exports = { add, getById };
