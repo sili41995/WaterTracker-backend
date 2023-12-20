@@ -130,7 +130,122 @@ class WaterTrackerServiceApi {
       });
   }
 
-  updateDailyWaterRequirement;
+  updateDailyWaterRequirement(data) {
+    const options = {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${this.#TOKEN}`,
+      },
+    };
+
+    return fetch(`${this.#BASE_URL}/aquatrack/daily-water-requirement`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          throw Error(data.message);
+        }
+        return data;
+      });
+  }
+
+  addHydrationEntry(data) {
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${this.#TOKEN}`,
+      },
+    };
+
+    return fetch(`${this.#BASE_URL}/hydration-entries`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          throw Error(data.message);
+        }
+        return data;
+      });
+  }
+
+  fetchHydrationEntry(id) {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${this.#TOKEN}`,
+      },
+    };
+
+    return fetch(`${this.#BASE_URL}/hydration-entries/${id}`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          throw Error(data.message);
+        }
+        return data;
+      });
+  }
+
+  updateHydrationEntryById({ id, data }) {
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${this.#TOKEN}`,
+      },
+    };
+
+    return fetch(`${this.#BASE_URL}/hydration-entries/${id}`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          throw Error(data.message);
+        }
+        return data;
+      });
+  }
+
+  deleteHydrationEntryById(id) {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${this.#TOKEN}`,
+      },
+    };
+
+    return fetch(`${this.#BASE_URL}/hydration-entries/${id}`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          throw Error(data.message);
+        }
+        return data;
+      });
+  }
+
+  fetchTodaysProgress() {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${this.#TOKEN}`,
+      },
+    };
+
+    return fetch(`${this.#BASE_URL}/hydration-entries/today`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          throw Error(data.message);
+        }
+        return data;
+      });
+  }
 }
 
 const waterTrackerServiceApi = new WaterTrackerServiceApi();
