@@ -15,7 +15,10 @@ class WaterTrackerServiceApi {
   signUpUser(data) {
     const options = {
       method: 'POST',
-      body: data,
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
     };
 
     return fetch(`${this.#BASE_URL}/auth/signup`, options)
@@ -106,6 +109,28 @@ class WaterTrackerServiceApi {
         return data;
       });
   }
+
+  updateUserProfile(data) {
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        Authorization: `Bearer ${this.#TOKEN}`,
+      },
+    };
+
+    return fetch(`${this.#BASE_URL}/auth/profile`, options)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          throw Error(data.message);
+        }
+        return data;
+      });
+  }
+
+  updateDailyWaterRequirement;
 }
 
 const waterTrackerServiceApi = new WaterTrackerServiceApi();
