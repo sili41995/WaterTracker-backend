@@ -5,6 +5,7 @@ const {
   getById,
   updateById,
   deleteById,
+  getProgress,
 } = require('../../controllers/hydrationEntries');
 const {
   addHydrationEntrySchema,
@@ -16,6 +17,7 @@ const router = express.Router();
 router.use(authenticate);
 
 router.post('/', validateBody(addHydrationEntrySchema), add);
+router.get('/today', getProgress);
 router.get('/:entryId', isValidId, getById);
 router.put(
   '/:entryId',

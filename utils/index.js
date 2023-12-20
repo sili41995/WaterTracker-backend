@@ -5,6 +5,8 @@ const deleteImage = require('./deleteImage');
 const updateImage = require('./updateImage');
 const getImageFilename = require('./getImageFilename');
 const filterFieldsToUpdate = require('./filterFieldsToUpdate');
+const getTodayTime = require('./getTodayTime');
+const getTodayProgress = require('./getTodayProgress');
 
 module.exports = {
   ctrlWrapper,
@@ -14,4 +16,6 @@ module.exports = {
   updateImage,
   getImageFilename,
   filterFieldsToUpdate,
+  getTodayTime,
+  getTodayProgress,
 };
