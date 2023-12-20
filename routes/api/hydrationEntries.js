@@ -1,6 +1,10 @@
 const express = require('express');
 const { authenticate, validateBody, isValidId } = require('../../middlewares');
-const { add, getById } = require('../../controllers/hydrationEntries');
+const {
+  add,
+  getById,
+  updateById,
+} = require('../../controllers/hydrationEntries');
 const {
   addHydrationEntrySchema,
   updateHydrationEntrySchema,
@@ -11,11 +15,12 @@ const router = express.Router();
 router.use(authenticate);
 
 router.post('/', validateBody(addHydrationEntrySchema), add);
+router.get('/:entryId', isValidId, getById);
 router.put(
   '/:entryId',
   isValidId,
   validateBody(updateHydrationEntrySchema),
-  getById
+  updateById
 );
 
 module.exports = router;

@@ -2,13 +2,14 @@ const { findHydrationEntryFilter } = require('../../constants');
 const { HydrationEntry } = require('../../models/hydrationEntry');
 const { ctrlWrapper, httpError } = require('../../utils');
 
-const getById = async (req, res, next) => {
+const updateById = async (req, res, next) => {
   const { _id: owner } = req.user;
   const { entryId: _id } = req.params;
 
-  const result = await HydrationEntry.findOne({ _id, owner }).select(
-    findHydrationEntryFilter
-  );
+  const result = await HydrationEntry.findOneAndUpdate(
+    { _id, owner },
+    req.body
+  ).select(findHydrationEntryFilter);
 
   if (!result) {
     throw httpError({ status: 404 });
@@ -17,4 +18,4 @@ const getById = async (req, res, next) => {
   res.status(200).json(result);
 };
 
-module.exports = ctrlWrapper(getById);
+module.exports = ctrlWrapper(updateById);
