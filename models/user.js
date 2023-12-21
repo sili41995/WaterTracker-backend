@@ -25,6 +25,7 @@ const {
   dailyWaterRequirementErr,
   dailyWaterRequirement,
   emptyStringErr,
+  missingFieldsErr,
 } = errorMessages;
 
 const userSchema = new Schema(
@@ -115,7 +116,10 @@ const dailyWaterRequirementSchema = Joi.object({
 
 const updateProfileSchema = Joi.object({
   password: passwordSettings,
-  passwordRepeat: passwordRepeatSettings,
+  passwordRepeat: Joi.string().when('password', {
+    is: String,
+    then: passwordRepeatSettings.required(),
+  }),
   passwordOutdated: passwordSettings,
   gender: Joi.string()
     .valid(...genders)
@@ -126,7 +130,11 @@ const updateProfileSchema = Joi.object({
     'string.empty': emptyStringErr,
   }),
   email: emailSettings,
-});
+})
+  .min(1)
+  .messages({
+    'object.min': missingFieldsErr,
+  });
 
 const User = model('user', userSchema);
 
