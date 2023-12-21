@@ -113,6 +113,21 @@ const dailyWaterRequirementSchema = Joi.object({
     }),
 });
 
+const updateProfileSchema = Joi.object({
+  password: passwordSettings,
+  passwordRepeat: passwordRepeatSettings,
+  passwordOutdated: passwordSettings,
+  gender: Joi.string()
+    .valid(...genders)
+    .messages({
+      'any.only': genderEnumErr,
+    }),
+  name: Joi.string().pattern(notEmptyValueRegExp).messages({
+    'string.empty': emptyStringErr,
+  }),
+  email: emailSettings,
+});
+
 const User = model('user', userSchema);
 
 module.exports = {
@@ -120,4 +135,5 @@ module.exports = {
   signUpSchema,
   signInSchema,
   dailyWaterRequirementSchema,
+  updateProfileSchema,
 };
