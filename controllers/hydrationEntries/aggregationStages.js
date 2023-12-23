@@ -1,12 +1,20 @@
-const getMatchByTimeStage = ({ year, month, owner }) => ({
-  $match: {
-    owner,
-    time: {
-      $gte: new Date(`${year}-${month}`),
-      $lt: new Date(`${year}-${Number(month) + 1}`),
+const getMatchByTimeStage = ({ year, month, owner }) => {
+  const startDate = new Date(`${year}-${month}`);
+  const finalDate =
+    month === '12'
+      ? new Date(`${Number(year) + 1}-${month}`)
+      : new Date(`${year}-${Number(month) + 1}`);
+
+  return {
+    $match: {
+      owner,
+      time: {
+        $gte: startDate,
+        $lt: finalDate,
+      },
     },
-  },
-});
+  };
+};
 
 const getSortByTimeStage = () => ({
   $sort: {
