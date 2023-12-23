@@ -20,6 +20,8 @@ const errorMessages = {
   timeFeatureErr: 'The time is in the future',
   amountRequiredErr: 'Missing required amount field',
   timeRequiredErr: 'Missing required time field',
+  invalidDateErr:
+    'To get monthly progress, you need to specify the year and month',
 };
 
 module.exports = errorMessages;
