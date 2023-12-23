@@ -14,12 +14,15 @@ const errorMessages = {
   dailyWaterRequirement: 'Missing required daily water requirement field',
   dailyWaterRequirementErr:
     'The specified volume of water is harmful to health',
+  dailyWaterRequirementAbsentErr: 'Set your daily water requirement',
   genderEnumErr: `Gender must be one of ${profileSettings.genders.join(
     ' or '
   )}`,
   timeFeatureErr: 'The time is in the future',
   amountRequiredErr: 'Missing required amount field',
   timeRequiredErr: 'Missing required time field',
+  invalidDateErr:
+    'To get monthly progress, you need to specify the year and month',
 };
 
 module.exports = errorMessages;

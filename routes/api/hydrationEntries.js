@@ -5,7 +5,8 @@ const {
   getById,
   updateById,
   deleteById,
-  getProgress,
+  getTodaysProgress,
+  getMonthProgress,
 } = require('../../controllers/hydrationEntries');
 const { addHydrationEntrySchema } = require('../../models/hydrationEntry');
 const { notEmptyBodySchema } = require('../../schemas');
@@ -20,7 +21,8 @@ router.post(
   validateBody(addHydrationEntrySchema),
   add
 );
-router.get('/today', getProgress);
+router.get('/today', getTodaysProgress);
+router.get('/month-progress', getMonthProgress);
 router.get('/:entryId', isValidId, getById);
 router.put(
   '/:entryId',

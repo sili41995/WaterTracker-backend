@@ -1,3 +1,4 @@
+const { errorMessages } = require('../../constants');
 const { HydrationEntry } = require('../../models/hydrationEntry');
 const {
   ctrlWrapper,
@@ -6,13 +7,15 @@ const {
   getTodayProgress,
 } = require('../../utils');
 
+const { dailyWaterRequirementAbsentErr } = errorMessages;
+
 const getTodaysProgress = async (req, res, next) => {
   const { _id: owner, dailyWaterRequirement } = req.user;
 
   if (!dailyWaterRequirement) {
     throw httpError({
       status: 400,
-      message: 'Set your daily water requirement',
+      message: dailyWaterRequirementAbsentErr,
     });
   }
 
