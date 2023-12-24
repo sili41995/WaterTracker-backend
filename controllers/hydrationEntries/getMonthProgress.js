@@ -8,6 +8,7 @@ const {
   getAddMonthNameStage,
   getAddDailyDataPostfixStage,
   getAddObjectIdStage,
+  getRoundNumbersStage,
 } = require('./aggregationStages');
 const { errorMessages } = require('../../constants');
 
@@ -28,6 +29,7 @@ const getMonthProgress = async (req, res, next) => {
   const sortByTimeStage = getSortByTimeStage();
   const groupByDayStage = getGroupByDayStage();
   const entriesInfoStage = getEntriesInfoStage();
+  const roundNumbersStage = getRoundNumbersStage();
   const addMonthNameStage = getAddMonthNameStage();
   const addDailyDataPostfixStage = getAddDailyDataPostfixStage();
   const addObjectIdStage = getAddObjectIdStage();
@@ -37,6 +39,7 @@ const getMonthProgress = async (req, res, next) => {
     sortByTimeStage,
     groupByDayStage,
     entriesInfoStage,
+    roundNumbersStage,
     addMonthNameStage,
     addDailyDataPostfixStage,
     addObjectIdStage,
