@@ -16,7 +16,7 @@ const hydrationEntrySchema = new Schema(
   {
     time: {
       type: Date,
-      max: [Date.now, timeFeatureErr],
+      max: [Date.now(), timeFeatureErr],
       required: [true, timeRequiredErr],
     },
     amount: {
